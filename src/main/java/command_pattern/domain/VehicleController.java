@@ -7,28 +7,30 @@ import command_pattern.domain.interfaces.Vehicle;
 import command_pattern.domain.interfaces.VehicleCommand;
 
 public class VehicleController {
-    private final VehicleCommand startCommand;
-    private final VehicleCommand accelerateCommand;
-    private final VehicleCommand stopCommand;
+    private final Vehicle vehicle;
 
     public VehicleController(Vehicle vehicle) {
-        this.startCommand = new StartCommand(vehicle);
-        this.accelerateCommand = new AccelerateCommand(vehicle);
-        this.stopCommand = new StopCommand(vehicle);
+        this.vehicle = vehicle;
+    }
+
+    private void execute(VehicleCommand command) {
+        new VehicleCommandInvoker().setCommand(command).execute();
+    }
+
+    public void start() {
+        StartCommand startCommand = new StartCommand(vehicle);
+        execute(startCommand);
     }
 
 
-
-    public void start() {
-        startCommand.execute();
+    public void accelerate() {
+        AccelerateCommand accelerateCommand = new AccelerateCommand(vehicle);
+        execute(accelerateCommand);
     }
 
     public void stop() {
-        stopCommand.execute();
-    }
-
-    public void accelerate() {
-        accelerateCommand.execute();
+        StopCommand command = new StopCommand(vehicle);
+        execute(command);
     }
 
 }
